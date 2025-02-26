@@ -1,7 +1,7 @@
 import { FlagIcon } from 'lucide-react'
 import { useState } from 'react'
 
-import Board from './Board'
+import Board from './BoardOLD'
 
 export default function App() {
     const [difficulty, setDifficulty] = useState('easy')
