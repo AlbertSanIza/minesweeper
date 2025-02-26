@@ -1,6 +1,8 @@
 import { FlagIcon } from 'lucide-react'
 import { useState } from 'react'
 
+import Board from './Board'
+
 export default function App() {
     const [difficulty, setDifficulty] = useState('easy')
 
@@ -21,7 +23,14 @@ export default function App() {
                 </div>
             </div>
             <div className="flex flex-1 items-center justify-center overflow-hidden p-8">
-                <div className="size-full max-h-[calc(100vw-64px)] max-w-[calc(100vh-128px)] rounded-xl border-4 bg-[#AAD750]">{/* here goes the board */}</div>
+                <div className="size-full max-h-[calc(100vw-64px)] max-w-[calc(100vh-128px)] overflow-hidden rounded-xl border-4">
+                    <Board
+                        difficulty={difficulty}
+                        onGameOver={function (won: boolean): void {
+                            console.log(won ? 'You won!' : 'You lost!')
+                        }}
+                    />
+                </div>
             </div>
         </div>
     )
