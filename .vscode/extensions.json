@@ -1,3 +1,10 @@
 {
-    "recommendations": ["PKief.material-icon-theme", "ChakrounAnas.turbo-console-log", "GitHub.copilot", "esbenp.prettier-vscode", "aaron-bond.better-comments"]
+    "recommendations": [
+        "aaron-bond.better-comments",
+        "bradlc.vscode-tailwindcss",
+        "ChakrounAnas.turbo-console-log",
+        "esbenp.prettier-vscode",
+        "GitHub.copilot",
+        "PKief.material-icon-theme"
+    ]
 }
