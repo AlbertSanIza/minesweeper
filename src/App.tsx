@@ -21,7 +21,7 @@ export default function App() {
                 </div>
             </div>
             <div className="flex flex-1 items-center justify-center overflow-hidden p-8">
-                <div className="size-full max-h-[100vw] rounded-xl border-4 bg-red-300">hello world</div>
+                <div className="size-full max-h-[calc(100vw-64px)] max-w-[calc(100vh-128px)] rounded-xl border-4 bg-[#AAD750]">hello world</div>
             </div>
         </div>
     )
