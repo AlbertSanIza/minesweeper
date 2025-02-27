@@ -27,8 +27,8 @@ export const useGameStore = create<{
     flagsPlaced: number
     setDifficulty: (difficulty: Difficulty) => void
     reset: () => void
-    reveal: (row: number, col: number) => void
     flag: (row: number, col: number) => void
+    reveal: (row: number, col: number) => void
     getRemainingFlags: () => number
 }>((set, get) => {
     const savedDifficulty = (localStorage.getItem('difficulty') as Difficulty) || Difficulty.Easy
@@ -60,10 +60,20 @@ export const useGameStore = create<{
             })
         },
 
+        flag: (row, col) => {
+            const { board, gameOver, flagsPlaced } = get()
+            if (gameOver || board[row][col].revealed) {
+                return
+            }
+            const newBoard = JSON.parse(JSON.stringify(board))
+            newBoard[row][col].flagged = !newBoard[row][col].flagged
+            const newFlagsPlaced = flagsPlaced + (newBoard[row][col].flagged ? 1 : -1)
+
+            set({ board: newBoard, flagsPlaced: newFlagsPlaced })
+        },
+
         reveal: (row, col) => {
             const { board, gameOver } = get()
-
-            // Don't do anything if game is over or cell is already revealed or flagged
             if (gameOver || board[row][col].revealed || board[row][col].flagged) {
                 return
             }
@@ -114,29 +124,6 @@ export const useGameStore = create<{
             set({
                 board: newBoard,
                 gameWon: checkWinCondition(newBoard)
-            })
-        },
-
-        flag: (row, col) => {
-            const { board, gameOver, flagsPlaced } = get()
-
-            // Don't do anything if game is over or cell is already revealed
-            if (gameOver || board[row][col].revealed) {
-                return
-            }
-
-            // Create a new board to update
-            const newBoard = JSON.parse(JSON.stringify(board))
-
-            // Toggle flag
-            newBoard[row][col].flagged = !newBoard[row][col].flagged
-
-            // Update flag count
-            const newFlagsPlaced = flagsPlaced + (newBoard[row][col].flagged ? 1 : -1)
-
-            set({
-                board: newBoard,
-                flagsPlaced: newFlagsPlaced
             })
         },
 
