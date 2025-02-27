@@ -1,6 +1,6 @@
 import { useGameStore } from '../lib/store'
 
-export default function Difficulty() {
+export default function DifficultySelect() {
     const { difficulty, setDifficulty } = useGameStore()
 
     return (
