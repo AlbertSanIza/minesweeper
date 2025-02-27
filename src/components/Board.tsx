@@ -10,21 +10,25 @@ export default function Board() {
     }
 
     return (
-        <div className="rounded border border-gray-700">
-            {board.map((row, rowIndex) => (
-                <div key={rowIndex} className="flex">
-                    {row.map((cell, colIndex) => (
-                        <Square
-                            key={`${rowIndex}-${colIndex}`}
-                            onClick={() => revealCell(rowIndex, colIndex)}
-                            onContextMenu={(e) => handleRightClick(e, rowIndex, colIndex)}
-                            revealed={cell.revealed}
-                            flagged={cell.flagged}
-                            value={cell.revealed ? (cell.mine ? '💣' : cell.count > 0 ? cell.count : '') : ''}
-                        />
-                    ))}
-                </div>
-            ))}
+        <div
+            className="grid size-full gap-0.5 text-white"
+            style={{
+                gridTemplateRows: `repeat(${board.length}, 1fr)`,
+                gridTemplateColumns: `repeat(${board[0].length}, 1fr)`
+            }}
+        >
+            {board.map((row, rowIndex) => {
+                return row.map((cell, colIndex) => (
+                    <Square
+                        flagged={cell.flagged}
+                        revealed={cell.revealed}
+                        key={`${rowIndex}-${colIndex}`}
+                        onClick={() => revealCell(rowIndex, colIndex)}
+                        onContextMenu={(e) => handleRightClick(e, rowIndex, colIndex)}
+                        value={cell.revealed ? (cell.mine ? '💣' : cell.count > 0 ? cell.count : '') : ''}
+                    />
+                ))
+            })}
         </div>
     )
 }
