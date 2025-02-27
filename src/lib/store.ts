@@ -37,24 +37,14 @@ export const useGameStore = create<{
         board: generateBoard(savedDifficulty),
         gameOver: false,
         gameWon: false,
-        flagsPlaced: 0,
 
         setDifficulty: (difficulty) => {
             localStorage.setItem('difficulty', difficulty)
-            set({
-                difficulty,
-                board: generateBoard(difficulty),
-                gameOver: false,
-                gameWon: false
-            })
+            set({ difficulty, board: generateBoard(difficulty), gameOver: false, gameWon: false })
         },
 
         reset: () => {
-            set({
-                board: generateBoard(get().difficulty),
-                gameOver: false,
-                gameWon: false
-            })
+            set({ board: generateBoard(get().difficulty), gameOver: false, gameWon: false })
         },
 
         flag: (row, col) => {
@@ -88,10 +78,7 @@ export const useGameStore = create<{
                     })
                 })
 
-                set({
-                    board: newBoard,
-                    gameOver: true
-                })
+                set({ board: newBoard, gameOver: true })
                 return
             }
 
@@ -117,10 +104,7 @@ export const useGameStore = create<{
 
             revealRecursive(newBoard, row, col)
 
-            set({
-                board: newBoard,
-                gameWon: checkWinCondition(newBoard)
-            })
+            set({ board: newBoard, gameWon: checkWinCondition(newBoard) })
         },
 
         getRemainingFlags: () => {
