@@ -1,9 +1,7 @@
-import { FC } from 'react'
-
 import { useGameStore } from '../lib/store'
 import Square from './Square'
 
-const Board: FC = () => {
+export default function Board() {
     const { board, revealCell, flagCell } = useGameStore()
 
     const handleRightClick = (e: React.MouseEvent, row: number, col: number) => {
@@ -30,5 +28,3 @@ const Board: FC = () => {
         </div>
     )
 }
-
-export default Board
