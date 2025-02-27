@@ -31,7 +31,7 @@ export default function Cell({ onClick, onContextMenu, revealed, flagged, value 
         <button
             onClick={onClick}
             onContextMenu={onContextMenu}
-            className={`flex size-full items-center justify-center ${revealed ? 'bg-gray-50' : 'cursor-pointer bg-lime-300 hover:bg-lime-800'} ${getColorClass()}`}
+            className={`flex size-full items-center justify-center text-lg font-bold ${revealed ? 'bg-gray-50' : 'cursor-pointer bg-lime-300 hover:bg-lime-800'} ${getColorClass()}`}
         >
             {flagged ? '⛳' : revealed ? value : ''}
         </button>
