@@ -1,5 +1,3 @@
-import { FC } from 'react'
-
 interface SquareProps {
     onClick: () => void
     onContextMenu: (e: React.MouseEvent) => void
@@ -8,7 +6,7 @@ interface SquareProps {
     value?: string | number
 }
 
-const Square: FC<SquareProps> = ({ onClick, onContextMenu, revealed, flagged, value = '' }) => {
+export default function Square({ onClick, onContextMenu, revealed, flagged, value = '' }: SquareProps) {
     const getColorClass = () => {
         if (typeof value !== 'number') {
             return ''
@@ -39,5 +37,3 @@ const Square: FC<SquareProps> = ({ onClick, onContextMenu, revealed, flagged, va
         </button>
     )
 }
-
-export default Square
