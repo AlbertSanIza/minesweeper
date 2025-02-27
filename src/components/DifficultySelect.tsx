@@ -5,7 +5,7 @@ export default function DifficultySelect() {
 
     return (
         <select
-            className="rounded-xl border-4 border-black bg-amber-50 px-2 py-1 font-bold text-black"
+            className="h-10 cursor-pointer rounded-xl border-4 border-black bg-amber-50 px-2 font-bold text-black"
             value={difficulty}
             onChange={(e) => setDifficulty(e.target.value as 'easy' | 'medium' | 'hard')}
         >
