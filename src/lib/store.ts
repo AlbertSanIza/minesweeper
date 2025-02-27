@@ -1,19 +1,5 @@
 import { create } from 'zustand'
 
-interface GameState {
-    difficulty: 'easy' | 'medium' | 'hard'
-    board: Cell[][]
-    gameOver: boolean
-    gameWon: boolean
-    flagsPlaced: number
-    setDifficulty: (difficulty: 'easy' | 'medium' | 'hard') => void
-    reset: () => void
-    revealCell: (row: number, col: number) => void
-    flagCell: (row: number, col: number) => void
-    getMineCount: () => number
-    getRemainingFlags: () => number
-}
-
 interface Cell {
     mine: boolean
     count: number
@@ -28,7 +14,19 @@ const settings = {
 }
 
 // Create the game store
-export const useGameStore = create<GameState>((set, get) => ({
+export const useGameStore = create<{
+    difficulty: 'easy' | 'medium' | 'hard'
+    board: Cell[][]
+    gameOver: boolean
+    gameWon: boolean
+    flagsPlaced: number
+    setDifficulty: (difficulty: 'easy' | 'medium' | 'hard') => void
+    reset: () => void
+    revealCell: (row: number, col: number) => void
+    flagCell: (row: number, col: number) => void
+    getMineCount: () => number
+    getRemainingFlags: () => number
+}>((set, get) => ({
     difficulty: 'easy',
     board: generateBoard('easy'),
     gameOver: false,
