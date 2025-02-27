@@ -1,4 +1,4 @@
-import Minesweeper from './Minesweeper'
+import Minesweeper from './components/Minesweeper'
 import TopBar from './components/TopBar'
 
 export default function App() {
