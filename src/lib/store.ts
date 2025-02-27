@@ -27,8 +27,8 @@ export const useGameStore = create<{
     flagsPlaced: number
     setDifficulty: (difficulty: Difficulty) => void
     reset: () => void
-    revealCell: (row: number, col: number) => void
-    flagCell: (row: number, col: number) => void
+    reveal: (row: number, col: number) => void
+    flag: (row: number, col: number) => void
     getRemainingFlags: () => number
 }>((set, get) => ({
     difficulty: Difficulty.Easy,
@@ -56,7 +56,7 @@ export const useGameStore = create<{
         })
     },
 
-    revealCell: (row, col) => {
+    reveal: (row, col) => {
         const { board, gameOver } = get()
 
         // Don't do anything if game is over or cell is already revealed or flagged
@@ -116,7 +116,7 @@ export const useGameStore = create<{
         })
     },
 
-    flagCell: (row, col) => {
+    flag: (row, col) => {
         const { board, gameOver, flagsPlaced } = get()
 
         // Don't do anything if game is over or cell is already revealed

@@ -4,11 +4,11 @@ import { useGameStore } from '../lib/store'
 import Cell from './Cell'
 
 export default function Board() {
-    const { board, flagCell, revealCell } = useGameStore()
+    const { board, flag, reveal } = useGameStore()
 
     const handleRightClick = (event: MouseEvent, row: number, col: number) => {
         event.preventDefault()
-        flagCell(row, col)
+        flag(row, col)
     }
 
     return (
@@ -25,7 +25,7 @@ export default function Board() {
                         flagged={cell.flagged}
                         revealed={cell.revealed}
                         key={`${rowIndex}-${colIndex}`}
-                        onClick={() => revealCell(rowIndex, colIndex)}
+                        onClick={() => reveal(rowIndex, colIndex)}
                         onContextMenu={(event) => handleRightClick(event, rowIndex, colIndex)}
                         value={cell.revealed ? (cell.mine ? '💣' : cell.count > 0 ? cell.count : '') : ''}
                     />
