@@ -111,12 +111,9 @@ export const useGameStore = create<{
 
             revealRecursive(newBoard, row, col)
 
-            // Check for win condition
-            const won = checkWinCondition(newBoard)
-
             set({
                 board: newBoard,
-                gameWon: won
+                gameWon: checkWinCondition(newBoard)
             })
         },
 
