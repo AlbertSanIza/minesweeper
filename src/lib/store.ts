@@ -152,7 +152,7 @@ export const useGameStore = create<{
 }))
 
 // Helper function to generate a new board based on difficulty
-function generateBoard(difficulty: 'easy' | 'medium' | 'hard'): Cell[][] {
+function generateBoard(difficulty: Difficulty): Cell[][] {
     const { rows, cols, mines } = settings[difficulty]
 
     // Create empty board with all cells initialized
