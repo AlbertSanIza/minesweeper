@@ -1,6 +1,19 @@
 import { create } from 'zustand'
 
-// Define cell interface
+interface GameState {
+    difficulty: 'easy' | 'medium' | 'hard'
+    board: Cell[][]
+    gameOver: boolean
+    gameWon: boolean
+    flagsPlaced: number
+    setDifficulty: (difficulty: 'easy' | 'medium' | 'hard') => void
+    resetGame: () => void
+    revealCell: (row: number, col: number) => void
+    flagCell: (row: number, col: number) => void
+    getMineCount: () => number
+    getRemainingFlags: () => number
+}
+
 interface Cell {
     mine: boolean
     count: number
@@ -8,30 +21,10 @@ interface Cell {
     flagged: boolean
 }
 
-// Define game settings for different difficulty levels
-const difficultySettings = {
+const settings = {
     easy: { rows: 8, cols: 8, mines: 10 },
     medium: { rows: 12, cols: 12, mines: 40 },
     hard: { rows: 16, cols: 16, mines: 99 }
-}
-
-// Define the store interface
-interface GameState {
-    difficulty: 'easy' | 'medium' | 'hard'
-    board: Cell[][]
-    gameOver: boolean
-    gameWon: boolean
-    flagsPlaced: number
-
-    // Actions
-    setDifficulty: (difficulty: 'easy' | 'medium' | 'hard') => void
-    resetGame: () => void
-    revealCell: (row: number, col: number) => void
-    flagCell: (row: number, col: number) => void
-
-    // Getters
-    getMineCount: () => number
-    getRemainingFlags: () => number
 }
 
 // Create the game store
@@ -93,7 +86,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
         // Recursively reveal cells
         const revealRecursive = (board: Cell[][], r: number, c: number) => {
-            const { rows, cols } = difficultySettings[get().difficulty]
+            const { rows, cols } = settings[get().difficulty]
 
             if (r < 0 || r >= rows || c < 0 || c >= cols || board[r][c].revealed || board[r][c].flagged) {
                 return
@@ -147,7 +140,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
     getMineCount: () => {
         const { difficulty } = get()
-        return difficultySettings[difficulty].mines
+        return settings[difficulty].mines
     },
 
     getRemainingFlags: () => {
@@ -158,7 +151,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
 // Helper function to generate a new board based on difficulty
 function generateBoard(difficulty: 'easy' | 'medium' | 'hard'): Cell[][] {
-    const { rows, cols, mines } = difficultySettings[difficulty]
+    const { rows, cols, mines } = settings[difficulty]
 
     // Create empty board with all cells initialized
     const board: Cell[][] = Array.from({ length: rows }, () =>
