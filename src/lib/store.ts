@@ -7,7 +7,7 @@ interface GameState {
     gameWon: boolean
     flagsPlaced: number
     setDifficulty: (difficulty: 'easy' | 'medium' | 'hard') => void
-    resetGame: () => void
+    reset: () => void
     revealCell: (row: number, col: number) => void
     flagCell: (row: number, col: number) => void
     getMineCount: () => number
@@ -45,10 +45,9 @@ export const useGameStore = create<GameState>((set, get) => ({
         })
     },
 
-    resetGame: () => {
-        const difficulty = get().difficulty
+    reset: () => {
         set({
-            board: generateBoard(difficulty),
+            board: generateBoard(get().difficulty),
             gameOver: false,
             gameWon: false,
             flagsPlaced: 0
