@@ -1,5 +1,5 @@
 import Board from './components/Board'
-import Message from './components/Message'
+import Dialog from './components/Dialog'
 import TopBar from './components/TopBar'
 
 export default function App() {
@@ -13,7 +13,7 @@ export default function App() {
                     </div>
                 </main>
             </div>
-            <Message />
+            <Dialog />
         </>
     )
 }
