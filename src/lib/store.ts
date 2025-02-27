@@ -30,120 +30,125 @@ export const useGameStore = create<{
     reveal: (row: number, col: number) => void
     flag: (row: number, col: number) => void
     getRemainingFlags: () => number
-}>((set, get) => ({
-    difficulty: Difficulty.Easy,
-    board: generateBoard(Difficulty.Easy),
-    gameOver: false,
-    gameWon: false,
-    flagsPlaced: 0,
+}>((set, get) => {
+    const savedDifficulty = (localStorage.getItem('difficulty') as Difficulty) || Difficulty.Easy
 
-    setDifficulty: (difficulty) => {
-        set({
-            difficulty,
-            board: generateBoard(difficulty),
-            gameOver: false,
-            gameWon: false,
-            flagsPlaced: 0
-        })
-    },
+    return {
+        difficulty: savedDifficulty,
+        board: generateBoard(savedDifficulty),
+        gameOver: false,
+        gameWon: false,
+        flagsPlaced: 0,
 
-    reset: () => {
-        set({
-            board: generateBoard(get().difficulty),
-            gameOver: false,
-            gameWon: false,
-            flagsPlaced: 0
-        })
-    },
-
-    reveal: (row, col) => {
-        const { board, gameOver } = get()
-
-        // Don't do anything if game is over or cell is already revealed or flagged
-        if (gameOver || board[row][col].revealed || board[row][col].flagged) {
-            return
-        }
-
-        // Create a new board to update
-        const newBoard = JSON.parse(JSON.stringify(board))
-
-        // Check if mine is clicked
-        if (newBoard[row][col].mine) {
-            // Reveal all mines
-            newBoard.forEach((row: Cell[]) => {
-                row.forEach((cell) => {
-                    if (cell.mine) {
-                        cell.revealed = true
-                    }
-                })
-            })
-
+        setDifficulty: (difficulty) => {
+            localStorage.setItem('difficulty', difficulty)
             set({
-                board: newBoard,
-                gameOver: true
+                difficulty,
+                board: generateBoard(difficulty),
+                gameOver: false,
+                gameWon: false,
+                flagsPlaced: 0
             })
-            return
-        }
+        },
 
-        // Recursively reveal cells
-        const revealRecursive = (board: Cell[][], r: number, c: number) => {
-            const { rows, cols } = settings[get().difficulty]
+        reset: () => {
+            set({
+                board: generateBoard(get().difficulty),
+                gameOver: false,
+                gameWon: false,
+                flagsPlaced: 0
+            })
+        },
 
-            if (r < 0 || r >= rows || c < 0 || c >= cols || board[r][c].revealed || board[r][c].flagged) {
+        reveal: (row, col) => {
+            const { board, gameOver } = get()
+
+            // Don't do anything if game is over or cell is already revealed or flagged
+            if (gameOver || board[row][col].revealed || board[row][col].flagged) {
                 return
             }
 
-            board[r][c].revealed = true
+            // Create a new board to update
+            const newBoard = JSON.parse(JSON.stringify(board))
 
-            // If this is a zero, reveal adjacent cells
-            if (board[r][c].count === 0) {
-                for (let i = -1; i <= 1; i++) {
-                    for (let j = -1; j <= 1; j++) {
-                        revealRecursive(board, r + i, c + j)
+            // Check if mine is clicked
+            if (newBoard[row][col].mine) {
+                // Reveal all mines
+                newBoard.forEach((row: Cell[]) => {
+                    row.forEach((cell) => {
+                        if (cell.mine) {
+                            cell.revealed = true
+                        }
+                    })
+                })
+
+                set({
+                    board: newBoard,
+                    gameOver: true
+                })
+                return
+            }
+
+            // Recursively reveal cells
+            const revealRecursive = (board: Cell[][], r: number, c: number) => {
+                const { rows, cols } = settings[get().difficulty]
+
+                if (r < 0 || r >= rows || c < 0 || c >= cols || board[r][c].revealed || board[r][c].flagged) {
+                    return
+                }
+
+                board[r][c].revealed = true
+
+                // If this is a zero, reveal adjacent cells
+                if (board[r][c].count === 0) {
+                    for (let i = -1; i <= 1; i++) {
+                        for (let j = -1; j <= 1; j++) {
+                            revealRecursive(board, r + i, c + j)
+                        }
                     }
                 }
             }
+
+            revealRecursive(newBoard, row, col)
+
+            // Check for win condition
+            const won = checkWinCondition(newBoard)
+
+            set({
+                board: newBoard,
+                gameWon: won
+            })
+        },
+
+        flag: (row, col) => {
+            const { board, gameOver, flagsPlaced } = get()
+
+            // Don't do anything if game is over or cell is already revealed
+            if (gameOver || board[row][col].revealed) {
+                return
+            }
+
+            // Create a new board to update
+            const newBoard = JSON.parse(JSON.stringify(board))
+
+            // Toggle flag
+            newBoard[row][col].flagged = !newBoard[row][col].flagged
+
+            // Update flag count
+            const newFlagsPlaced = flagsPlaced + (newBoard[row][col].flagged ? 1 : -1)
+
+            set({
+                board: newBoard,
+                flagsPlaced: newFlagsPlaced
+            })
+        },
+
+        getRemainingFlags: () => {
+            const { difficulty, flagsPlaced } = get()
+            return settings[difficulty].mines - flagsPlaced
         }
-
-        revealRecursive(newBoard, row, col)
-
-        // Check for win condition
-        const won = checkWinCondition(newBoard)
-
-        set({
-            board: newBoard,
-            gameWon: won
-        })
-    },
-
-    flag: (row, col) => {
-        const { board, gameOver, flagsPlaced } = get()
-
-        // Don't do anything if game is over or cell is already revealed
-        if (gameOver || board[row][col].revealed) {
-            return
-        }
-
-        // Create a new board to update
-        const newBoard = JSON.parse(JSON.stringify(board))
-
-        // Toggle flag
-        newBoard[row][col].flagged = !newBoard[row][col].flagged
-
-        // Update flag count
-        const newFlagsPlaced = flagsPlaced + (newBoard[row][col].flagged ? 1 : -1)
-
-        set({
-            board: newBoard,
-            flagsPlaced: newFlagsPlaced
-        })
-    },
-
-    getRemainingFlags: () => {
-        const { difficulty, flagsPlaced } = get()
-        return settings[difficulty].mines - flagsPlaced
     }
-}))
+})
 
 // Helper function to generate a new board based on difficulty
 function generateBoard(difficulty: Difficulty): Cell[][] {
