@@ -31,7 +31,7 @@ export default function Square({ onClick, onContextMenu, revealed, flagged, valu
         <button
             onClick={onClick}
             onContextMenu={onContextMenu}
-            className={`flex size-full items-center justify-center ${revealed ? 'bg-gray-50' : 'cursor-pointer bg-lime-300 hover:bg-lime-800 active:bg-green-700'} ${getColorClass()}`}
+            className={`flex size-full items-center justify-center ${revealed ? 'bg-gray-50' : 'cursor-pointer bg-lime-300 hover:bg-lime-800'} ${getColorClass()}`}
         >
             {flagged ? '⛳' : revealed ? value : ''}
         </button>
