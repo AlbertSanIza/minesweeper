@@ -24,7 +24,6 @@ export const useGameStore = create<{
     board: Cell[][]
     gameOver: boolean
     gameWon: boolean
-    flagsPlaced: number
     setDifficulty: (difficulty: Difficulty) => void
     reset: () => void
     flag: (row: number, col: number) => void
@@ -46,8 +45,7 @@ export const useGameStore = create<{
                 difficulty,
                 board: generateBoard(difficulty),
                 gameOver: false,
-                gameWon: false,
-                flagsPlaced: 0
+                gameWon: false
             })
         },
 
@@ -55,21 +53,19 @@ export const useGameStore = create<{
             set({
                 board: generateBoard(get().difficulty),
                 gameOver: false,
-                gameWon: false,
-                flagsPlaced: 0
+                gameWon: false
             })
         },
 
         flag: (row, col) => {
-            const { board, gameOver, flagsPlaced } = get()
+            const { board, gameOver } = get()
             if (gameOver || board[row][col].revealed) {
                 return
             }
             const newBoard = JSON.parse(JSON.stringify(board))
             newBoard[row][col].flagged = !newBoard[row][col].flagged
-            const newFlagsPlaced = flagsPlaced + (newBoard[row][col].flagged ? 1 : -1)
 
-            set({ board: newBoard, flagsPlaced: newFlagsPlaced })
+            set({ board: newBoard })
         },
 
         reveal: (row, col) => {
@@ -128,8 +124,9 @@ export const useGameStore = create<{
         },
 
         getRemainingFlags: () => {
-            const { difficulty, flagsPlaced } = get()
-            return settings[difficulty].mines - flagsPlaced
+            const { board, difficulty } = get()
+
+            return settings[difficulty].mines - board.reduce((acc, row) => acc + row.filter((cell) => cell.flagged).length, 0)
         }
     }
 })
