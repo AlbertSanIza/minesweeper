@@ -29,7 +29,6 @@ export const useGameStore = create<{
     reset: () => void
     revealCell: (row: number, col: number) => void
     flagCell: (row: number, col: number) => void
-    getMineCount: () => number
     getRemainingFlags: () => number
 }>((set, get) => ({
     difficulty: Difficulty.Easy,
@@ -140,14 +139,9 @@ export const useGameStore = create<{
         })
     },
 
-    getMineCount: () => {
-        const { difficulty } = get()
-        return settings[difficulty].mines
-    },
-
     getRemainingFlags: () => {
-        const { getMineCount, flagsPlaced } = get()
-        return getMineCount() - flagsPlaced
+        const { difficulty, flagsPlaced } = get()
+        return settings[difficulty].mines - flagsPlaced
     }
 }))
 
