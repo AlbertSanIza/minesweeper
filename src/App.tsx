@@ -1,10 +1,10 @@
 import { FlagIcon } from 'lucide-react'
-import { useState } from 'react'
 
-import Board from './BoardOLD'
+import Minesweeper from './Minesweeper'
+import { useGameStore } from './lib/store'
 
 export default function App() {
-    const [difficulty, setDifficulty] = useState('easy')
+    const { difficulty, setDifficulty } = useGameStore()
 
     return (
         <div className="fixed flex size-full flex-col bg-amber-50">
@@ -12,7 +12,7 @@ export default function App() {
                 <select
                     className="rounded-xl border-4 border-black bg-amber-50 px-2 py-1 font-bold text-black"
                     value={difficulty}
-                    onChange={(e) => setDifficulty(e.target.value)}
+                    onChange={(e) => setDifficulty(e.target.value as 'easy' | 'medium' | 'hard')}
                 >
                     <option value="easy">EASY</option>
                     <option value="medium">MEDIUM</option>
@@ -24,12 +24,7 @@ export default function App() {
             </div>
             <div className="flex flex-1 items-center justify-center overflow-hidden p-8">
                 <div className="size-full max-h-[calc(100vw-64px)] max-w-[calc(100vh-128px)] overflow-hidden rounded-xl border-4">
-                    <Board
-                        difficulty={difficulty}
-                        onGameOver={function (won: boolean): void {
-                            console.log(won ? 'You won!' : 'You lost!')
-                        }}
-                    />
+                    <Minesweeper />
                 </div>
             </div>
         </div>
