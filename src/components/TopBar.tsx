@@ -7,7 +7,7 @@ export default function TopBar() {
     const { resetGame, getRemainingFlags } = useGameStore()
 
     return (
-        <div className="fixed top-0 z-10 flex h-16 w-full items-center justify-between border-b-4 border-black bg-[#4A752C] px-6 text-white">
+        <div className="fixed top-0 z-10 flex h-16 w-full items-center justify-between border-b-4 border-black bg-green-900 px-6 text-white">
             <DifficultySelect />
             <div className="flex items-center gap-6">
                 <div className="flex items-center gap-2 text-xl font-bold">
