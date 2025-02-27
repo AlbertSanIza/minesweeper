@@ -5,9 +5,9 @@ export default function DifficultySelect() {
 
     return (
         <select
-            className="h-10 cursor-pointer rounded-xl border-4 border-black bg-amber-50 px-2 font-bold text-black"
+            className="h-10 cursor-pointer rounded-xl border-4 border-black bg-amber-100 px-2 text-xl font-bold text-black"
             value={difficulty}
-            onChange={(e) => setDifficulty(e.target.value as Difficulty)}
+            onChange={(event) => setDifficulty(event.target.value as Difficulty)}
         >
             <option value="easy">EASY</option>
             <option value="medium">MEDIUM</option>
