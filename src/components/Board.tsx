@@ -1,7 +1,7 @@
 import { MouseEvent } from 'react'
 
 import { useGameStore } from '../lib/store'
-import Square from './Square'
+import Cell from './Cell'
 
 export default function Board() {
     const { board, flagCell, revealCell } = useGameStore()
@@ -21,7 +21,7 @@ export default function Board() {
         >
             {board.map((row, rowIndex) => {
                 return row.map((cell, colIndex) => (
-                    <Square
+                    <Cell
                         flagged={cell.flagged}
                         revealed={cell.revealed}
                         key={`${rowIndex}-${colIndex}`}
