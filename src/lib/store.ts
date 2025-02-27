@@ -1,5 +1,11 @@
 import { create } from 'zustand'
 
+export enum Difficulty {
+    Easy = 'easy',
+    Medium = 'medium',
+    Hard = 'hard'
+}
+
 interface Cell {
     mine: boolean
     count: number
@@ -8,27 +14,26 @@ interface Cell {
 }
 
 const settings = {
-    easy: { rows: 8, cols: 8, mines: 10 },
-    medium: { rows: 12, cols: 12, mines: 40 },
-    hard: { rows: 16, cols: 16, mines: 99 }
+    [Difficulty.Easy]: { rows: 8, cols: 8, mines: 10 },
+    [Difficulty.Medium]: { rows: 12, cols: 12, mines: 40 },
+    [Difficulty.Hard]: { rows: 16, cols: 16, mines: 99 }
 }
 
-// Create the game store
 export const useGameStore = create<{
-    difficulty: 'easy' | 'medium' | 'hard'
+    difficulty: Difficulty
     board: Cell[][]
     gameOver: boolean
     gameWon: boolean
     flagsPlaced: number
-    setDifficulty: (difficulty: 'easy' | 'medium' | 'hard') => void
+    setDifficulty: (difficulty: Difficulty) => void
     reset: () => void
     revealCell: (row: number, col: number) => void
     flagCell: (row: number, col: number) => void
     getMineCount: () => number
     getRemainingFlags: () => number
 }>((set, get) => ({
-    difficulty: 'easy',
-    board: generateBoard('easy'),
+    difficulty: Difficulty.Easy,
+    board: generateBoard(Difficulty.Easy),
     gameOver: false,
     gameWon: false,
     flagsPlaced: 0,
