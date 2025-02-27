@@ -6,7 +6,7 @@ interface SquareProps {
     value?: string | number
 }
 
-export default function Square({ onClick, onContextMenu, revealed, flagged, value = '' }: SquareProps) {
+export default function Cell({ onClick, onContextMenu, revealed, flagged, value = '' }: SquareProps) {
     const getColorClass = () => {
         if (typeof value !== 'number') {
             return ''
