@@ -10,9 +10,9 @@ interface Cell {
 
 // Define game settings for different difficulty levels
 const difficultySettings = {
-    easy: { rows: 8, cols: 10, mines: 10 },
-    medium: { rows: 14, cols: 18, mines: 40 },
-    hard: { rows: 20, cols: 24, mines: 99 }
+    easy: { rows: 8, cols: 8, mines: 10 },
+    medium: { rows: 12, cols: 12, mines: 40 },
+    hard: { rows: 16, cols: 16, mines: 99 }
 }
 
 // Define the store interface
