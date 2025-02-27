@@ -1,4 +1,3 @@
-import { FlagIcon } from 'lucide-react'
 import { FC } from 'react'
 
 interface SquareProps {
@@ -10,9 +9,10 @@ interface SquareProps {
 }
 
 const Square: FC<SquareProps> = ({ onClick, onContextMenu, revealed, flagged, value = '' }) => {
-    // Different color based on number
     const getColorClass = () => {
-        if (typeof value !== 'number') return ''
+        if (typeof value !== 'number') {
+            return ''
+        }
 
         const colors = [
             '',
@@ -35,7 +35,7 @@ const Square: FC<SquareProps> = ({ onClick, onContextMenu, revealed, flagged, va
             onContextMenu={onContextMenu}
             className={`flex size-full items-center justify-center ${revealed ? 'bg-gray-50' : 'cursor-pointer bg-lime-300 hover:bg-lime-800 active:bg-green-700'} ${getColorClass()}`}
         >
-            {flagged ? <FlagIcon /> : revealed ? value : ''}
+            {flagged ? '⛳' : revealed ? value : ''}
         </button>
     )
 }
