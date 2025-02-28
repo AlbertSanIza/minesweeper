@@ -52,7 +52,7 @@ export const useGameStore = create<{
             if (board[row][col].revealed) {
                 return
             }
-            const newBoard = JSON.parse(JSON.stringify(board))
+            const newBoard = JSON.parse(JSON.stringify(board)) as Cell[][]
             newBoard[row][col].flagged = !newBoard[row][col].flagged
             set({ board: newBoard })
         },
@@ -62,7 +62,7 @@ export const useGameStore = create<{
             if (board[row][col].revealed || board[row][col].flagged) {
                 return
             }
-            const newBoard = JSON.parse(JSON.stringify(board))
+            const newBoard = JSON.parse(JSON.stringify(board)) as Cell[][]
             if (newBoard[row][col].mine) {
                 newBoard.forEach((row: Cell[]) => {
                     row.forEach((cell) => {
