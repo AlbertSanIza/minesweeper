@@ -48,28 +48,22 @@ export const useGameStore = create<{
         },
 
         flag: (row, col) => {
-            const { board, gameOver } = get()
-            if (gameOver || board[row][col].revealed) {
+            const { board } = get()
+            if (board[row][col].revealed) {
                 return
             }
             const newBoard = JSON.parse(JSON.stringify(board))
             newBoard[row][col].flagged = !newBoard[row][col].flagged
-
             set({ board: newBoard })
         },
 
         reveal: (row, col) => {
-            const { board, gameOver } = get()
-            if (gameOver || board[row][col].revealed || board[row][col].flagged) {
+            const { board } = get()
+            if (board[row][col].revealed || board[row][col].flagged) {
                 return
             }
-
-            // Create a new board to update
             const newBoard = JSON.parse(JSON.stringify(board))
-
-            // Check if mine is clicked
             if (newBoard[row][col].mine) {
-                // Reveal all mines
                 newBoard.forEach((row: Cell[]) => {
                     row.forEach((cell) => {
                         if (cell.mine) {
@@ -77,22 +71,15 @@ export const useGameStore = create<{
                         }
                     })
                 })
-
                 set({ board: newBoard, gameOver: true })
                 return
             }
-
-            // Recursively reveal cells
             const revealRecursive = (board: Cell[][], r: number, c: number) => {
                 const { rows, cols } = settings[get().difficulty]
-
                 if (r < 0 || r >= rows || c < 0 || c >= cols || board[r][c].revealed || board[r][c].flagged) {
                     return
                 }
-
                 board[r][c].revealed = true
-
-                // If this is a zero, reveal adjacent cells
                 if (board[r][c].count === 0) {
                     for (let i = -1; i <= 1; i++) {
                         for (let j = -1; j <= 1; j++) {
@@ -101,21 +88,17 @@ export const useGameStore = create<{
                     }
                 }
             }
-
             revealRecursive(newBoard, row, col)
-
             set({ board: newBoard, gameWon: checkWinCondition(newBoard) })
         },
 
         getRemainingFlags: () => {
             const { board, difficulty } = get()
-
             return settings[difficulty].mines - board.reduce((acc, row) => acc + row.filter((cell) => cell.flagged).length, 0)
         }
     }
 })
 
-// Helper function to generate a new board based on difficulty
 function generateBoard(difficulty: Difficulty): Cell[][] {
     const { rows, cols, mines } = settings[difficulty]
 
@@ -156,11 +139,9 @@ function generateBoard(difficulty: Difficulty): Cell[][] {
     return board
 }
 
-// Helper function to check if the game is won
 function checkWinCondition(board: Cell[][]): boolean {
     for (const row of board) {
         for (const cell of row) {
-            // If there's a non-mine cell that's not revealed, the game is not won yet
             if (!cell.mine && !cell.revealed) {
                 return false
             }
