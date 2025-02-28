@@ -64,13 +64,13 @@ export const useGameStore = create<{
             }
             const newBoard = JSON.parse(JSON.stringify(board)) as Cell[][]
             if (newBoard[row][col].mine) {
-                newBoard.forEach((row: Cell[]) => {
-                    row.forEach((cell) => {
+                for (const row of newBoard) {
+                    for (const cell of row) {
                         if (cell.mine) {
                             cell.revealed = true
                         }
-                    })
-                })
+                    }
+                }
                 set({ board: newBoard, gameOver: true })
                 return
             }
