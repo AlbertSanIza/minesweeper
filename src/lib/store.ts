@@ -16,7 +16,7 @@ interface Cell {
 const settings = {
     [Difficulty.Easy]: { rows: 8, cols: 8, mines: 11 },
     [Difficulty.Medium]: { rows: 12, cols: 12, mines: 22 },
-    [Difficulty.Hard]: { rows: 16, cols: 16, mines: 40 }
+    [Difficulty.Hard]: { rows: 16, cols: 16, mines: 50 }
 }
 
 export const useGameStore = create<{
